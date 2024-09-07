@@ -1,4 +1,7 @@
-import {atom} from "jotai"
-import type { Canvas} from "fabric"
+import {atom} from "jotai";
+import type {Canvas} from "fabric";
+import {createStore} from "jotai/index";
 
-export const canvasAtom = atom<Canvas> ()
+export const store = createStore();
+
+export const canvasAtom = atom<Canvas>();
