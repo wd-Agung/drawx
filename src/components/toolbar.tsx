@@ -48,6 +48,7 @@ export function Toolbar() {
   };
 
   const handleColorChange = (color: string) => {
+    if (!canvas) return;
     setColor(color);
     setColorPopoverOpen(false);
     if (canvas.freeDrawingBrush) {

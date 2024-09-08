@@ -1,33 +1,38 @@
 import {useEffect, useRef} from 'react';
-import {Toolbar} from './components/Toolbar';
+import {Toolbar} from './components/toolbar.tsx';
 import * as fabric from 'fabric';
 import {useSetAtom} from "jotai";
 import {canvasAtom} from "./atom";
 import "./hotkey.ts";
 
 
-function App() {
+const App = () => {
   const setCanvas = useSetAtom(canvasAtom);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasEl = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
+    if (!canvasRef.current) return;
+
     const options = {};
-    const canvas = new fabric.Canvas(canvasEl.current, options);
+    const canvas = new fabric.Canvas(canvasRef.current!, options);
     setCanvas(canvas);
 
-    canvas.on('mouse:wheel', function (opt) {
+    canvas.on('mouse:wheel', (opt) => {
+      const thiz = this as unknown as fabric.Canvas;
       if (opt.e.ctrlKey) {
         const delta = opt.e.deltaY;
-        let zoom = this.getZoom();
+        let zoom = thiz.getZoom();
+        if (!zoom) return;
+
         zoom *= 0.99 ** delta;
         if (zoom > 20) zoom = 20;
         if (zoom < 0.01) zoom = 0.01;
-        const center = this.getCenter();
+        const center = thiz.getCenter();
         const point = opt.pointer ?? new fabric.Point(center.left, center.top);
-        this.zoomToPoint(point, zoom);
+        thiz.zoomToPoint(point, zoom);
       } else {
-        this.relativePan(new fabric.Point(opt.e.deltaX, opt.e.deltaY));
+        thiz.relativePan(new fabric.Point(opt.e.deltaX, opt.e.deltaY));
       }
 
       opt.e.preventDefault();
@@ -37,13 +42,16 @@ function App() {
     const canvasResizer = () => {
       if (!containerRef.current) return;
       canvas.setDimensions({
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight
+        width: containerRef.current?.offsetWidth,
+        height: containerRef.current?.offsetHeight
       });
     };
 
     const resizeObserver = new ResizeObserver(canvasResizer);
-    resizeObserver.observe(containerRef.current);
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current!);
+    }
     return () => {
       canvas.dispose();
       resizeObserver.disconnect();
@@ -54,10 +62,10 @@ function App() {
     <div className="dot-tile">
       <Toolbar/>
       <div ref={containerRef} className="w-full h-full">
-        <canvas width="1024" height="1024" ref={canvasEl}/>
+        <canvas id="canvas" width="1024" height="1024" ref={canvasRef}/>
       </div>
     </div>
   );
-}
+};
 
 export default App;
