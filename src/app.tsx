@@ -12,27 +12,23 @@ const App = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
-
     const options = {};
     const canvas = new fabric.Canvas(canvasRef.current!, options);
     setCanvas(canvas);
 
     canvas.on('mouse:wheel', (opt) => {
-      const thiz = this as unknown as fabric.Canvas;
       if (opt.e.ctrlKey) {
         const delta = opt.e.deltaY;
-        let zoom = thiz.getZoom();
-        if (!zoom) return;
+        let zoom = canvas.getZoom();
 
         zoom *= 0.99 ** delta;
         if (zoom > 20) zoom = 20;
         if (zoom < 0.01) zoom = 0.01;
-        const center = thiz.getCenter();
+        const center = canvas.getCenter();
         const point = opt.pointer ?? new fabric.Point(center.left, center.top);
-        thiz.zoomToPoint(point, zoom);
+        canvas.zoomToPoint(point, zoom);
       } else {
-        thiz.relativePan(new fabric.Point(opt.e.deltaX, opt.e.deltaY));
+        canvas.relativePan(new fabric.Point(opt.e.deltaX, opt.e.deltaY));
       }
 
       opt.e.preventDefault();
