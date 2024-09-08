@@ -1,3 +1,3 @@
 # drawx
 
-Draw everything
+Simple whiteboard for quick sketches.
