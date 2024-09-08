@@ -35,6 +35,25 @@ const App = () => {
       opt.e.stopPropagation();
     });
 
+    const loadCanvas = () => {
+      const json = localStorage.getItem('canvas');
+      if (json) {
+        canvas.loadFromJSON(json, () => {
+          canvas.renderAll();
+        });
+      }
+    };
+
+    loadCanvas();
+
+    const saveCanvas = () => {
+      localStorage.setItem('canvas', JSON.stringify(canvas.toJSON()));
+    };
+
+    canvas.on('object:modified', saveCanvas);
+    canvas.on('object:added', saveCanvas);
+    canvas.on('object:removed', saveCanvas);
+
     const canvasResizer = () => {
       if (!containerRef.current) return;
       canvas.setDimensions({
