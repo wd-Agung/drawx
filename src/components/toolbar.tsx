@@ -22,6 +22,7 @@ import {
   CreateText,
   UpdateActiveObjectFill
 } from "@/canvas/elements.ts";
+import {useHotkeys} from "react-hotkeys-hook";
 
 
 export function Toolbar() {
@@ -34,12 +35,15 @@ export function Toolbar() {
   const [shapePopoverOpen, setShapePopoverOpen] = useState(false);
   const [colorPopoverOpen, setColorPopoverOpen] = useState(false);
 
-  const handlePointerMode = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    setIsPointerMode(true);
+  const stopDrawingIfActive = () => {
     setIsDrawingMode(false);
     canvas.isDrawingMode = false;
-    // canvas.discardActiveObject();
+  };
+
+  const handlePointerMode = (e?: MouseEvent<HTMLButtonElement>) => {
+    e?.stopPropagation();
+    setIsPointerMode(true);
+    stopDrawingIfActive();
     canvas.renderAll();
   };
 
@@ -52,11 +56,11 @@ export function Toolbar() {
     UpdateActiveObjectFill(canvas, color);
   };
 
-  const handleDrawingMode = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+  const handleDrawingMode = (e?: MouseEvent<HTMLButtonElement>) => {
+    e?.stopPropagation();
     setIsPointerMode(false);
     setIsDrawingMode(true);
-    canvas.isDrawingMode = !isDrawingMode;
+    canvas.isDrawingMode = true;
 
     const brush = new fabric.PencilBrush(canvas);
     brush.width = 4;
@@ -66,9 +70,10 @@ export function Toolbar() {
     }
   };
 
-  const handleDeleteElements = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+  const handleDeleteElements = (e?: MouseEvent<HTMLButtonElement>) => {
+    e?.stopPropagation();
     canvas.remove(...canvas.getActiveObjects());
+    canvas.discardActiveObject();
     canvas.renderAll();
   };
 
@@ -87,17 +92,21 @@ export function Toolbar() {
     }
   };
 
-  const handleCreateText = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
+  const handleCreateText = (e?: MouseEvent<HTMLButtonElement>) => {
+    e?.stopPropagation();
+    stopDrawingIfActive();
     CreateText(canvas, "New Text", color);
   };
 
   const handleClickAway = () => {
-    setIsDrawingMode(false);
     canvas.discardActiveObject();
-    canvas.isDrawingMode = false;
+    stopDrawingIfActive();
     canvas.renderAll();
   };
+
+  useHotkeys('v', () => handlePointerMode());
+  useHotkeys('p', () => handleDrawingMode());
+  useHotkeys('t', () => handleCreateText());
 
   return (
     <div onClick={handleClickAway} className="flex items-center justify-center bg-background py-4 px-6 border-b">
@@ -115,7 +124,7 @@ export function Toolbar() {
                 <span className="sr-only">Pointer</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Pointer</TooltipContent>
+            <TooltipContent>Pointer<kbd>V</kbd></TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -129,7 +138,7 @@ export function Toolbar() {
                 <span className="sr-only">Pencil</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Pencil</TooltipContent>
+            <TooltipContent>Pencil<kbd>P</kbd></TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -138,7 +147,7 @@ export function Toolbar() {
                 <span className="sr-only">Eraser</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Eraser</TooltipContent>
+            <TooltipContent>Eraser<kbd>⌫</kbd>/<kbd>Del</kbd></TooltipContent>
           </Tooltip>
           <Tooltip>
             <Popover open={shapePopoverOpen} onOpenChange={setShapePopoverOpen}>
@@ -174,7 +183,7 @@ export function Toolbar() {
                 <span className="sr-only">Text</span>
               </Button>
             </TooltipTrigger>
-            <TooltipContent>Text</TooltipContent>
+            <TooltipContent>Text<kbd>T</kbd></TooltipContent>
           </Tooltip>
           <Tooltip>
             <Popover open={colorPopoverOpen} onOpenChange={setColorPopoverOpen}>

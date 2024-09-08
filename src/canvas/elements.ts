@@ -71,6 +71,8 @@ export function CreateText(canvas: fabric.Canvas, text: string, color: string = 
     fontSize: 20
   });
   canvas.add(textObj);
+  canvas.discardActiveObject();
+  canvas.setActiveObject(textObj);
   canvas.renderAll();
 }
 

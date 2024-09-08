@@ -11,8 +11,6 @@ hotkeys('cmd+a,ctrl+a', function (event) {
 });
 
 hotkeys('delete,backspace', function () {
-  // Prevent the default refresh event under WINDOWS system
-  console.log('delete');
   const canvas = store.get(canvasAtom);
   const activeObjects = canvas.getActiveObjects();
 
