@@ -24,6 +24,14 @@ import {
 } from "@/canvas/elements.ts";
 import {useHotkeys} from "react-hotkeys-hook";
 
+const Colors = {
+  Black: "#000000",
+  White: "#ffffff",
+  Yellow: "#f59e0b",
+  Red: "#ef4444",
+  Blue: "#3b82f6",
+  Green: "#22c55e",
+};
 
 export function Toolbar() {
   const canvas = useAtomValue(canvasAtom);
@@ -108,6 +116,15 @@ export function Toolbar() {
   useHotkeys('v', () => handlePointerMode());
   useHotkeys('p', () => handleDrawingMode());
   useHotkeys('t', () => handleCreateText());
+  useHotkeys('1', () => handleColorChange("#000000"));
+  useHotkeys('2', () => handleColorChange("#ffffff"));
+  useHotkeys('3', () => handleColorChange("#f59e0b"));
+  useHotkeys('4', () => handleColorChange("#ef4444"));
+  useHotkeys('5', () => handleColorChange("#3b82f6"));
+  useHotkeys('6', () => handleColorChange("#22c55e"));
+  useHotkeys('shift+s', () => handleCreateShape('square'));
+  useHotkeys('shift+c', () => handleCreateShape('circle'));
+  useHotkeys('shift+t', () => handleCreateShape('triangle'));
 
   return (
     <div onClick={handleClickAway} className="flex items-center justify-center bg-background py-4 px-6 border-b">
@@ -161,19 +178,34 @@ export function Toolbar() {
                 </TooltipTrigger>
                 <TooltipContent>Shapes</TooltipContent>
               </PopoverTrigger>
-              <PopoverContent className="flex p-1 justify-between w-36">
-                <Button onClick={() => handleCreateShape('square')} variant="ghost" size="icon">
-                  <SquareIcon className="w-5 h-5"/>
-                  <span className="sr-only">Rectangle</span>
-                </Button>
-                <Button onClick={() => handleCreateShape('circle')} variant="ghost" size="icon">
-                  <CircleIcon className="w-5 h-5"/>
-                  <span className="sr-only">Circle</span>
-                </Button>
-                <Button onClick={() => handleCreateShape('triangle')} variant="ghost" size="icon">
-                  <TriangleIcon className="w-5 h-5"/>
-                  <span className="sr-only">Triangle</span>
-                </Button>
+              <PopoverContent className="flex p-1 justify-between w-32">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button onClick={() => handleCreateShape('square')} variant="ghost" size="icon">
+                      <SquareIcon className="w-5 h-5"/>
+                      <span className="sr-only">Rectangle</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Square<kbd>shift</kbd><kbd>s</kbd></TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button onClick={() => handleCreateShape('circle')} variant="ghost" size="icon">
+                      <CircleIcon className="w-5 h-5"/>
+                      <span className="sr-only">Circle</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Circle<kbd>shift</kbd><kbd>c</kbd></TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button onClick={() => handleCreateShape('triangle')} variant="ghost" size="icon">
+                      <TriangleIcon className="w-5 h-5"/>
+                      <span className="sr-only">Triangle</span>
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Triangle<kbd>shift</kbd><kbd>t</kbd></TooltipContent>
+                </Tooltip>
               </PopoverContent>
             </Popover>
           </Tooltip>
@@ -199,27 +231,75 @@ export function Toolbar() {
                   </Button>
                 </TooltipTrigger>
               </PopoverTrigger>
-              <PopoverContent className="flex justify-between w-44">
-                <div
-                  onClick={() => handleColorChange("#000000")}
-                  className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-black"
-                ></div>
-                <div
-                  onClick={() => handleColorChange("#ffffff")}
-                  className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-white"
-                ></div>
-                <div
-                  onClick={() => handleColorChange("#f59e0b")}
-                  className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-amber-500"
-                ></div>
-                <div
-                  onClick={() => handleColorChange("#ef4444")}
-                  className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-red-500"
-                ></div>
-                <div
-                  onClick={() => handleColorChange("#3b82f6")}
-                  className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-blue-500"
-                ></div>
+              <PopoverContent className="flex justify-between w-48">
+                {
+                  Object.entries(Colors).map((([name, hex], i) => (
+                    <Tooltip key={hex}>
+                      <TooltipTrigger asChild>
+                        <div
+                          onClick={() => handleColorChange(hex)}
+                          className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200"
+                          style={{background: hex}}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>{name}<kbd>{i + 1}</kbd></TooltipContent>
+                    </Tooltip>
+                  )))
+                }
+                {/*<Tooltip>*/}
+                {/*  <TooltipTrigger asChild>*/}
+                {/*    <div*/}
+                {/*      onClick={() => handleColorChange("#000000")}*/}
+                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-black"*/}
+                {/*    />*/}
+                {/*  </TooltipTrigger>*/}
+                {/*  <TooltipContent>Black<kbd>1</kbd></TooltipContent>*/}
+                {/*</Tooltip>*/}
+                {/*<Tooltip>*/}
+                {/*  <TooltipTrigger asChild>*/}
+                {/*    <div*/}
+                {/*      onClick={() => handleColorChange("#ffffff")}*/}
+                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-white"*/}
+                {/*    />*/}
+                {/*  </TooltipTrigger>*/}
+                {/*  <TooltipContent>White<kbd>2</kbd></TooltipContent>*/}
+                {/*</Tooltip>*/}
+                {/*<Tooltip>*/}
+                {/*  <TooltipTrigger asChild>*/}
+                {/*    <div*/}
+                {/*      onClick={() => handleColorChange("#f59e0b")}*/}
+                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-amber-500"*/}
+                {/*    />*/}
+                {/*  </TooltipTrigger>*/}
+                {/*  <TooltipContent>Yellow<kbd>3</kbd></TooltipContent>*/}
+                {/*</Tooltip>*/}
+                {/*<Tooltip>*/}
+                {/*  <TooltipTrigger asChild>*/}
+                {/*    <div*/}
+                {/*      onClick={() => handleColorChange("#ef4444")}*/}
+                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-red-500"*/}
+                {/*    />*/}
+                {/*  </TooltipTrigger>*/}
+                {/*  <TooltipContent>Red<kbd>4</kbd></TooltipContent>*/}
+                {/*</Tooltip>*/}
+                {/*<Tooltip>*/}
+                {/*  <TooltipTrigger asChild>*/}
+                {/*    <div*/}
+                {/*      onClick={() => handleColorChange("#3b82f6")}*/}
+                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-blue-500"*/}
+                {/*    />*/}
+                {/*  </TooltipTrigger>*/}
+                {/*  <TooltipContent>Blue<kbd>5</kbd></TooltipContent>*/}
+                {/*</Tooltip>*/}
+                {/*<Tooltip>*/}
+                {/*  <TooltipTrigger asChild>*/}
+                {/*    <div*/}
+                {/*      onClick={() => handleColorChange("#22c55e")}*/}
+                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-green-500"*/}
+                {/*    />*/}
+                {/*  </TooltipTrigger>*/}
+                {/*  <TooltipContent>Green<kbd>6</kbd></TooltipContent>*/}
+                {/*</Tooltip>*/}
               </PopoverContent>
             </Popover>
             <TooltipContent>Color Picker</TooltipContent>
