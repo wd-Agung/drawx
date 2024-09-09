@@ -76,7 +76,7 @@ const App = () => {
   return (
     <div className="dot-tile">
       <Toolbar/>
-      <div ref={containerRef} className="w-full h-full">
+      <div ref={containerRef} className="w-full" style={{height: '94dvh'}}>
         <canvas id="canvas" width="1024" height="1024" ref={canvasRef}/>
       </div>
     </div>
