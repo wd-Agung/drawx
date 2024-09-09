@@ -246,60 +246,6 @@ export function Toolbar() {
                     </Tooltip>
                   )))
                 }
-                {/*<Tooltip>*/}
-                {/*  <TooltipTrigger asChild>*/}
-                {/*    <div*/}
-                {/*      onClick={() => handleColorChange("#000000")}*/}
-                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-black"*/}
-                {/*    />*/}
-                {/*  </TooltipTrigger>*/}
-                {/*  <TooltipContent>Black<kbd>1</kbd></TooltipContent>*/}
-                {/*</Tooltip>*/}
-                {/*<Tooltip>*/}
-                {/*  <TooltipTrigger asChild>*/}
-                {/*    <div*/}
-                {/*      onClick={() => handleColorChange("#ffffff")}*/}
-                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-white"*/}
-                {/*    />*/}
-                {/*  </TooltipTrigger>*/}
-                {/*  <TooltipContent>White<kbd>2</kbd></TooltipContent>*/}
-                {/*</Tooltip>*/}
-                {/*<Tooltip>*/}
-                {/*  <TooltipTrigger asChild>*/}
-                {/*    <div*/}
-                {/*      onClick={() => handleColorChange("#f59e0b")}*/}
-                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-amber-500"*/}
-                {/*    />*/}
-                {/*  </TooltipTrigger>*/}
-                {/*  <TooltipContent>Yellow<kbd>3</kbd></TooltipContent>*/}
-                {/*</Tooltip>*/}
-                {/*<Tooltip>*/}
-                {/*  <TooltipTrigger asChild>*/}
-                {/*    <div*/}
-                {/*      onClick={() => handleColorChange("#ef4444")}*/}
-                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-red-500"*/}
-                {/*    />*/}
-                {/*  </TooltipTrigger>*/}
-                {/*  <TooltipContent>Red<kbd>4</kbd></TooltipContent>*/}
-                {/*</Tooltip>*/}
-                {/*<Tooltip>*/}
-                {/*  <TooltipTrigger asChild>*/}
-                {/*    <div*/}
-                {/*      onClick={() => handleColorChange("#3b82f6")}*/}
-                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-blue-500"*/}
-                {/*    />*/}
-                {/*  </TooltipTrigger>*/}
-                {/*  <TooltipContent>Blue<kbd>5</kbd></TooltipContent>*/}
-                {/*</Tooltip>*/}
-                {/*<Tooltip>*/}
-                {/*  <TooltipTrigger asChild>*/}
-                {/*    <div*/}
-                {/*      onClick={() => handleColorChange("#22c55e")}*/}
-                {/*      className="w-5 h-5 cursor-pointer rounded-full ring-1 ring-slate-200 bg-green-500"*/}
-                {/*    />*/}
-                {/*  </TooltipTrigger>*/}
-                {/*  <TooltipContent>Green<kbd>6</kbd></TooltipContent>*/}
-                {/*</Tooltip>*/}
               </PopoverContent>
             </Popover>
             <TooltipContent>Color Picker</TooltipContent>
