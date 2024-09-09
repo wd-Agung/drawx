@@ -27,6 +27,8 @@ const App = () => {
         const center = canvas.getCenter();
         const point = opt.pointer ?? new fabric.Point(center.left, center.top);
         canvas.zoomToPoint(point, zoom);
+      } else if (opt.e.altKey) {
+        canvas.relativePan(new fabric.Point(opt.e.deltaY, 0));
       } else {
         canvas.relativePan(new fabric.Point(opt.e.deltaX, opt.e.deltaY));
       }
